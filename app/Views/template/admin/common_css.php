@@ -16,7 +16,7 @@
         margin-bottom: 0 !important;
     }
 
-    .pagination-select select{
+    .pagination-select select, .pagination-select button{
         height: calc(1.9rem + 2px) !important;
         font-size: .875rem !important;
         float: left !important;

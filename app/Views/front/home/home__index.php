@@ -60,10 +60,10 @@ class Home extends MyFrontController
 </div>
 
 <div class="row">
-    <div class="col-8">
+    <div class="col-12 col-lg-6 col-xl-5">
         <?php echo \$pagination_link; ?>
     </div>
-    <div class="col-4">
+    <div class="col-12 col-lg-4 col-xl-3">
         <?php echo \$pagination_select; ?>
     </div>
 </div>
