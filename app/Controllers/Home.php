@@ -15,7 +15,7 @@ class Home extends MyFrontController
         $page_num = (is_null($this->request->getGet('page_num')))?'1': $this->request->getGet('page_num');
 
 
-        $paginationLib->setting($page_num, 10, 128);
+        $paginationLib->setting($page_num, 10, 130);
         $pagination_link = $paginationLib->pagination_link();
         $this->set_view_data('pagination_link', $pagination_link);
         $pagination_select = $paginationLib->pagination_select();

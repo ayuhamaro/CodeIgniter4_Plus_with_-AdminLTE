@@ -57,19 +57,19 @@ class MyPaginationLib
         }
         elseif($this->page_count <= $show_page_count)
         {
-            if($this->page_num !== 1)
-            {
-                $pagination_array[] = array(
-                    'href' => (string)1,
-                    'class' => 'page-link',
-                    'text' => '第一頁',
-                );
-                $pagination_array[] = array(
-                    'href' => sprintf($this->uri_pattern, ($this->page_num - 1)),
-                    'class' => 'page-link',
-                    'text' => '上一頁',
-                );
-            }
+            //if($this->page_num !== 1)
+            //{
+            //    $pagination_array[] = array(
+            //        'href' => (string)1,
+            //        'class' => 'page-link',
+            //        'text' => '第一頁',
+            //    );
+            //    $pagination_array[] = array(
+            //        'href' => sprintf($this->uri_pattern, ($this->page_num - 1)),
+            //        'class' => 'page-link',
+            //        'text' => '上一頁',
+            //    );
+            //}
 
             for($i = 1; $i <= $this->page_count; $i++)
             {
@@ -91,33 +91,42 @@ class MyPaginationLib
                 }
             }
 
-            if($this->page_num !== $this->page_count)
-            {
-                $pagination_array[] = array(
-                    'href' => sprintf($this->uri_pattern, $i),
-                    'class' => 'page-link',
-                    'text' => '下一頁',
-                );
-                $pagination_array[] = array(
-                    'href' => sprintf($this->uri_pattern, $this->page_count),
-                    'class' => 'page-link',
-                    'text' => '最末頁',
-                );
-            }
+            //if($this->page_num !== $this->page_count)
+            //{
+            //    $pagination_array[] = array(
+            //        'href' => sprintf($this->uri_pattern, $i),
+            //        'class' => 'page-link',
+            //        'text' => '下一頁',
+            //    );
+            //    $pagination_array[] = array(
+            //        'href' => sprintf($this->uri_pattern, $this->page_count),
+            //        'class' => 'page-link',
+            //        'text' => '最末頁',
+            //    );
+            //}
         }
         else
         {
-            if($this->page_num !== 1)
+            //if($this->page_num !== 1)
+            //{
+            //    $pagination_array[] = array(
+            //        'href' => sprintf($this->uri_pattern, 1),
+            //        'class' => 'page-link',
+            //        'text' => '第一頁',
+            //    );
+            //    $pagination_array[] = array(
+            //        'href' => sprintf($this->uri_pattern, $this->page_num - 1),
+            //        'class' => 'page-link',
+            //        'text' => '上一頁',
+            //    );
+            //}
+
+            if($this->page_num > ceil($show_page_count / 2))
             {
                 $pagination_array[] = array(
                     'href' => sprintf($this->uri_pattern, 1),
                     'class' => 'page-link',
-                    'text' => '第一頁',
-                );
-                $pagination_array[] = array(
-                    'href' => sprintf($this->uri_pattern, $this->page_num - 1),
-                    'class' => 'page-link',
-                    'text' => '上一頁',
+                    'text' => '<<',
                 );
             }
 
@@ -192,24 +201,33 @@ class MyPaginationLib
                 }
             }
 
-            if($this->page_num !== $this->page_count)
+            if($this->page_num <= $this->page_count - ceil($show_page_count / 2))
             {
-                $pagination_array[] = array(
-                    'href' => sprintf($this->uri_pattern, $this->page_num + 1),
-                    'class' => 'page-link',
-                    'text' => '下一頁',
-                );
                 $pagination_array[] = array(
                     'href' => sprintf($this->uri_pattern, $this->page_count),
                     'class' => 'page-link',
-                    'text' => '最末頁',
+                    'text' => '>>',
                 );
             }
+
+            //if($this->page_num !== $this->page_count)
+            //{
+            //    $pagination_array[] = array(
+            //        'href' => sprintf($this->uri_pattern, $this->page_num + 1),
+            //        'class' => 'page-link',
+            //        'text' => '下一頁',
+            //    );
+            //    $pagination_array[] = array(
+            //        'href' => sprintf($this->uri_pattern, $this->page_count),
+            //        'class' => 'page-link',
+            //        'text' => '最末頁',
+            //    );
+            //}
         }
         $pagination_array[] = array(
             'href' => NULL,
             'class' => 'page-link page-link-disabled',
-            'text' => sprintf('共有&nbsp;%s&nbsp;筆，&nbsp;%s&nbsp;頁', $this->total_rows, $this->page_count),
+            'text' => sprintf('%s&nbsp;筆，&nbsp;%s&nbsp;頁', $this->total_rows, $this->page_count),
         );
 
         return view('template/pagination/link', array('pagination' => $pagination_array));
@@ -218,6 +236,18 @@ class MyPaginationLib
     public function pagination_select($show_page_count = 7)
     {
         $pagination_array = array();
+        $button_array = array(
+            'prev' => array(
+                'disabled' => TRUE,
+                'value' => NULL,
+                'text' => '上一頁',
+            ),
+            'next' => array(
+                'disabled' => TRUE,
+                'value' => NULL,
+                'text' => '下一頁',
+            ),
+        );
 
         if($this->page_count == 1)
         {
@@ -230,12 +260,24 @@ class MyPaginationLib
         }
         elseif($this->page_count <= $show_page_count)
         {
+            if($this->page_num > 1)
+            {
+                $button_array['prev']['disabled'] = FALSE;
+                $button_array['prev']['value'] = sprintf($this->uri_pattern, $this->page_num - 1);
+            }
+
+            if($this->page_num < $this->page_count)
+            {
+                $button_array['next']['disabled'] = FALSE;
+                $button_array['next']['value'] = sprintf($this->uri_pattern, $this->page_num + 1);
+            }
+
             for($i = 1; $i <= $this->page_count; $i++)
             {
                 if($i == $this->page_num)
                 {
                     $pagination_array[] = array(
-                        'disabled' => TRUE,
+                        'disabled' => FALSE,
                         'selected' => TRUE,
                         'value' => sprintf($this->uri_pattern, $i),
                         'text' => sprintf('第 %s 頁', $i),
@@ -254,6 +296,18 @@ class MyPaginationLib
         }
         else
         {
+            if($this->page_num > 1)
+            {
+                $button_array['prev']['disabled'] = FALSE;
+                $button_array['prev']['value'] = sprintf($this->uri_pattern, $this->page_num - 1);
+            }
+
+            if($this->page_num < $this->page_count)
+            {
+                $button_array['next']['disabled'] = FALSE;
+                $button_array['next']['value'] = sprintf($this->uri_pattern, $this->page_num + 1);
+            }
+
             if($this->page_num > ceil($show_page_count / 2) + 1)
             {
                 $pagination_array[] = array(
@@ -384,7 +438,7 @@ class MyPaginationLib
             }
         }
 
-        return view('template/pagination/select', array('pagination' => $pagination_array));
+        return view('template/pagination/select', array('pagination' => $pagination_array, 'button' => $button_array));
     }
 
 }
