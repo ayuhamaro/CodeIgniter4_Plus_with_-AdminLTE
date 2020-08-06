@@ -9,7 +9,7 @@
     <div class="col-12 col-lg-6 col-xl-5">
         <?php echo $pagination_link; ?>
     </div>
-    <div class="col-12 col-lg-4 col-xl-3">
+    <div class="col-12 col-lg-5 col-xl-4">
         <?php echo $pagination_select; ?>
     </div>
 </div>
@@ -63,7 +63,7 @@ class Home extends MyFrontController
     <div class="col-12 col-lg-6 col-xl-5">
         <?php echo \$pagination_link; ?>
     </div>
-    <div class="col-12 col-lg-4 col-xl-3">
+    <div class="col-12 col-lg-5 col-xl-4">
         <?php echo \$pagination_select; ?>
     </div>
 </div>
