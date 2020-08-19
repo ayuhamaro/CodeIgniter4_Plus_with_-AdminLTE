@@ -3,7 +3,7 @@ namespace App\Controllers;
 
 class MyCliController extends BaseController
 {
-    protected $view_data = array(
+    private $view_data = array(
         'msg' => 'The controller use at CLI only',
     );
 
