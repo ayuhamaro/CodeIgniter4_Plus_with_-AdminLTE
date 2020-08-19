@@ -9,7 +9,7 @@ class Home extends MyFrontController
         $paginationLib = new \App\Libraries\MyPaginationLib();
 
         $this->set_view_data('page_title', 'Hi! I\'m '.$config->siteName);
-        $this->set_view_data('msg', '簡單輕鬆套上全功能版型');
+        $this->set_view_data('msg', '簡單輕鬆套上全功能版型 & 自動渲染視圖！');
 
 
         $page_num = (is_null($this->request->getGet('page_num')))?'1': $this->request->getGet('page_num');
@@ -22,7 +22,7 @@ class Home extends MyFrontController
         $this->set_view_data('pagination_select', $pagination_select);
 
 
-		return $this->render('front/home/home__index');
+        $this->view_content = 'front/home/home__index';
 	}
 
 

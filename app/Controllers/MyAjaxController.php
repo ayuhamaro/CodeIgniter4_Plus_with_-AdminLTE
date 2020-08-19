@@ -21,6 +21,11 @@ class MyAjaxController extends BaseController
         }
     }
 
+    public function __destruct()
+    {
+        echo $this->ajax_output();
+    }
+
     protected function set_view_data($attr, $value)
     {
         $this->view_data[$attr] = $value;

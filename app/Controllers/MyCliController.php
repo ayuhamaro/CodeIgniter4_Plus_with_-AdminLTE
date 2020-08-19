@@ -16,6 +16,14 @@ class MyCliController extends BaseController
         }
     }
 
+    public function __destruct()
+    {
+        if(is_cli())
+        {
+            echo $this->cli_output();
+        }
+    }
+
     protected function set_view_data($attr, $value)
     {
         $this->view_data[$attr] = $value;

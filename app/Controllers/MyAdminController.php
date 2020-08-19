@@ -16,27 +16,25 @@ class MyAdminController extends BaseController
         'layout_options' => 'sidebar-mini layout-fixed',
     );
     /*view的各版面區塊設定*/
-    private $view_config = array(
-        'base' => 'template/admin/page_base',
-        'metadata' => NULL,
-        'common_js' => 'template/admin/common_js',
-        'js' => NULL,
-        'common_css' => 'template/admin/common_css',
-        'css' => NULL,
-        'header' => 'template/admin/header',
-        'content_header' => 'template/admin/content_header',
-        'content_footer' => 'template/admin/content_footer',
-        'left_side' => 'template/admin/left_side',
-        'right_side' => 'template/admin/right_side',
-        'error_msg' => 'template/admin/error_msg',
-        'content' => 'template/admin/content',
-        'footer' => 'template/admin/footer',
-        'extra' => 'template/admin/extra',
-        'common_nle_js' => 'template/admin/common_nle_js',   //Not Loading and Execution
-        'nle_js' => NULL,
-        'common_nle_css' => 'template/admin/common_nle_css',
-        'nle_css' => NULL,
-    );
+    protected $view_base = 'template/admin/page_base';
+    protected $view_metadata = NULL;
+    protected $view_common_js = 'template/admin/common_js';
+    protected $view_js = NULL;
+    protected $view_common_css = 'template/admin/common_css';
+    protected $view_css = NULL;
+    protected $view_header = 'template/admin/header';
+    protected $view_content_header = 'template/admin/content_header';
+    protected $view_content_footer = 'template/admin/content_footer';
+    protected $view_left_side = 'template/admin/left_side';
+    protected $view_right_side = 'template/admin/right_side';
+    protected $view_error_msg = 'template/admin/error_msg';
+    protected $view_content = 'template/admin/content';
+    protected $view_footer = 'template/admin/footer';
+    protected $view_extra = 'template/admin/extra';
+    protected $view_common_nle_js = 'template/admin/common_nle_js';
+    protected $view_nle_js = NULL;
+    protected $view_common_nle_css = 'template/admin/common_nle_css';
+    protected $view_nle_css = NULL;
 
     public function __construct()
     {
@@ -48,6 +46,11 @@ class MyAdminController extends BaseController
         {
             session_start();
         }
+    }
+
+    public function __destruct()
+    {
+        echo $this->render();
     }
 
     protected function set_view_data($attr, $value)
@@ -67,24 +70,7 @@ class MyAdminController extends BaseController
         }
     }
 
-    protected function set_view_config($attr, $value)
-    {
-        $this->view_config[$attr] = $value;
-    }
-
-    protected function get_view_config($attr = NULL)
-    {
-        if( ! is_null($attr) && isset($this->view_config[$attr]))
-        {
-            return $this->view_config[$attr];
-        }
-        else
-        {
-            return $this->view_config;
-        }
-    }
-
-    protected function render($content_page)
+    protected function render()
     {
         $config = config('Config\\Site');
 
@@ -98,9 +84,28 @@ class MyAdminController extends BaseController
             $this->view_data['site_title'] = $config->siteName.'-'.$this->view_data['page_title'];
         }
 
-        $this->view_config['content'] = $content_page;
-        $this->view_data['___VIEW_CONFIG___'] = $this->view_config;
-        return view($this->view_config['base'], $this->view_data);
+        $view_config = array(
+            'common_js' => $this->view_common_js,
+            'js' => NULL,
+            'common_css' => $this->view_common_css,
+            'css' => NULL,
+            'header' => $this->view_header,
+            'content_header' => $this->view_content_header,
+            'content_footer' => $this->view_content_footer,
+            'left_side' => $this->view_left_side,
+            'right_side' => $this->view_right_side,
+            'error_msg' => $this->view_error_msg,
+            'content' => $this->view_content,
+            'footer' => $this->view_footer,
+            'extra' => $this->view_extra,
+            'common_nle_js' => $this->view_common_nle_js,
+            'nle_js' => NULL,
+            'common_nle_css' => $this->view_common_nle_css,
+            'nle_css' => NULL,
+        );
+
+        $this->view_data['___VIEW_CONFIG___'] = $view_config;
+        return view($this->view_base, $this->view_data);
     }
 
 }
